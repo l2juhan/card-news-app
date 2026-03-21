@@ -1,0 +1,9 @@
+node_modules/
+dist/
+output/
+*.png
+.DS_Store
+.env
+.env.local
+CLAUDE.md
+.claude
