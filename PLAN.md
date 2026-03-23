@@ -137,22 +137,22 @@ card-news-app/
 **목표:** Electron + React + TypeScript 개발 환경 완성, 빈 윈도우가 뜨는 상태까지
 
 **작업 목록:**
-- [ ] `npm init` → package.json 생성
-- [ ] 핵심 의존성 설치
+- [x] `npm init` → package.json 생성
+- [x] 핵심 의존성 설치
   - electron, react, react-dom, typescript
   - vite, @vitejs/plugin-react
   - electron-builder
-- [ ] TypeScript 설정 (tsconfig.json, tsconfig.main.json, tsconfig.renderer.json)
-- [ ] `src/main/index.ts` - Electron 앱 진입점
+- [x] TypeScript 설정 (tsconfig.json, tsconfig.main.json, tsconfig.renderer.json)
+- [x] `src/main/index.ts` - Electron 앱 진입점
   - BrowserWindow 생성 (1200×800)
   - 개발 모드: localhost 로드 / 프로덕션: 빌드된 HTML 로드
-- [ ] `src/preload/index.ts` - contextBridge 기본 구조
-- [ ] `src/renderer/index.html` + `main.tsx` + `App.tsx` - React 기본 구조
-- [ ] `vite.config.ts` - Renderer 빌드 설정 (Electron 호환)
-- [ ] package.json scripts 설정
+- [x] `src/preload/index.ts` - contextBridge 기본 구조
+- [x] `src/renderer/index.html` + `main.tsx` + `App.tsx` - React 기본 구조
+- [x] `vite.config.ts` - Renderer 빌드 설정 (Electron 호환)
+- [x] package.json scripts 설정
   - `dev`: Vite dev server + Electron 동시 실행
   - `build`: Renderer 빌드 + Main 컴파일
-- [ ] 핫 리로드 동작 확인
+- [x] 핫 리로드 동작 확인
 
 **완료 기준:** `npm run dev`로 Electron 윈도우에 React 앱이 표시됨
 
