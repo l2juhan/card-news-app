@@ -6,5 +6,6 @@ output/
 .env
 .env.local
 CLAUDE.md
-.claude
+.claude/*
+!.claude/commands/
 .history
