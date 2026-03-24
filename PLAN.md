@@ -167,17 +167,17 @@ card-news-app/
 electron-builder 패키징 시 symlink를 따라가 실제 파일을 복사하므로 배포 앱은 독립적으로 동작한다.
 
 **작업 목록:**
-- [ ] Symlink 생성 (4개)
+- [x] Symlink 생성 (4개)
   - `templates/` → `../instagram-card-news/templates/` (12개 스타일 HTML 템플릿)
   - `config.json` → `../instagram-card-news/config.json` (스타일/해상도 설정)
   - `scripts/` → `../instagram-card-news/scripts/` (render.js 렌더러)
   - `.claude/skills/` → `../instagram-card-news/.claude/skills/` (카드뉴스 스킬 16개)
-- [ ] `.gitignore` 업데이트 (symlink 대상 파일 관리)
-- [ ] `src/shared/types.ts` 작성
+- [x] `.gitignore` 업데이트 (symlink 대상 파일 관리)
+- [x] `src/shared/types.ts` 작성
   - Slide, SlideType (공통 14종 + rn 전용 6종), StyleConfig, CardNewsProject 등 핵심 타입 정의
-- [ ] `puppeteer` 의존성 설치
-- [ ] 렌더링 테스트: `node scripts/render.js`로 샘플 slides.json → PNG 생성 확인
-- [ ] `workspace/`, `output/` 런타임 디렉토리 생성
+- [x] `puppeteer` 의존성 설치
+- [x] 렌더링 테스트: `node scripts/render.js`로 샘플 slides.json → PNG 생성 확인
+- [x] `workspace/`, `output/` 런타임 디렉토리 생성
 
 **완료 기준:** `node scripts/render.js --slides workspace/slides.json --style clean --output output/` 로 PNG 정상 생성
 
