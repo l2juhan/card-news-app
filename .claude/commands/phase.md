@@ -1,3 +1,8 @@
+---
+name: phase
+description: PLAN.md에서 Phase를 읽고 구현을 진행한다
+---
+
 PLAN.md에서 Phase를 읽고 구현을 진행한다.
 
 ## 0. Phase 번호 결정
