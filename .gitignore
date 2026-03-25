@@ -1,6 +1,7 @@
 node_modules/
 dist/
 output/
+workspace/
 *.png
 .DS_Store
 .env
@@ -8,4 +9,11 @@ output/
 CLAUDE.md
 .claude/*
 !.claude/commands/
+!.claude/skills
 .history
+
+# Symlinks (instagram-card-news에서 연동)
+# templates/ → ../instagram-card-news/templates/
+# config.json → ../instagram-card-news/config.json
+# scripts/ → ../instagram-card-news/scripts/
+# .claude/skills/ → ../instagram-card-news/.claude/skills/
