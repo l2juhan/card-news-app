@@ -12,8 +12,13 @@ export function SideNav() {
   const resetProject = useCardNewsStore((s) => s.resetProject);
   const clearMessages = useCardNewsStore((s) => s.clearMessages);
 
+  const slides = useCardNewsStore((s) => s.slides);
+
   const handleNavClick = (view: NavView) => {
     if (view === 'create' && currentView === 'create') {
+      if (slides.length > 0 && !window.confirm('현재 작업을 초기화하시겠습니까?')) {
+        return;
+      }
       resetProject();
       clearMessages();
     }

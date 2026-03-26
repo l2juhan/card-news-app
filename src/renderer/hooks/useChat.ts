@@ -4,71 +4,63 @@ import type { StyleName } from '../../shared/types';
 
 /**
  * 채팅 메시지 전송 및 IPC 요청을 연결하는 훅.
+ * getState()를 사용하여 stale closure를 방지한다.
  */
 export function useChat() {
-  const {
-    style,
-    slideCount,
-    slides,
-    isGenerating,
-    isEditing,
-    addMessage,
-    setGenerating,
-    setEditing,
-  } = useCardNewsStore();
-
   /** 카드뉴스 생성 요청 */
   const generate = useCallback(
     async (topic: string, overrideStyle?: StyleName, overrideCount?: number) => {
-      if (isGenerating || isEditing) return;
+      const s = useCardNewsStore.getState();
+      if (s.isGenerating || s.isEditing) return;
 
-      addMessage({ role: 'user', content: topic });
-      setGenerating(true);
+      s.addMessage({ role: 'user', content: topic });
+      s.setGenerating(true);
 
       try {
         await window.api.generate({
           topic,
-          style: overrideStyle ?? style,
-          slideCount: overrideCount ?? slideCount,
+          style: overrideStyle ?? s.style,
+          slideCount: overrideCount ?? s.slideCount,
         });
       } catch {
-        setGenerating(false);
-        addMessage({
+        useCardNewsStore.getState().setGenerating(false);
+        useCardNewsStore.getState().addMessage({
           role: 'system',
           content: '생성 요청에 실패했습니다. 다시 시도해주세요.',
         });
       }
     },
-    [style, slideCount, isGenerating, isEditing, addMessage, setGenerating],
+    [],
   );
 
   /** AI 기반 슬라이드 편집 요청 */
   const edit = useCallback(
     async (instruction: string, slideNumber?: number) => {
-      if (isGenerating || isEditing) return;
-      if (slides.length === 0) {
-        addMessage({
+      const s = useCardNewsStore.getState();
+      if (s.isGenerating || s.isEditing) return;
+      if (s.slides.length === 0) {
+        s.addMessage({
           role: 'system',
           content: '먼저 카드뉴스를 생성해주세요.',
         });
         return;
       }
 
-      addMessage({ role: 'user', content: instruction });
-      setEditing(true);
+      s.addMessage({ role: 'user', content: instruction });
+      s.setEditing(true);
 
-      const targetSlide = slideNumber ?? useCardNewsStore.getState().selectedSlide;
+      const targetSlide = slideNumber ?? s.selectedSlide;
       try {
         await window.api.edit({ slideNumber: targetSlide, instruction });
       } catch {
-        setEditing(false);
-        addMessage({
+        useCardNewsStore.getState().setEditing(false);
+        useCardNewsStore.getState().addMessage({
           role: 'system',
           content: '수정 요청에 실패했습니다. 다시 시도해주세요.',
         });
       }
     },
-    [slides.length, isGenerating, isEditing, addMessage, setEditing],
+    [],
   );
 
   /** 채팅 메시지 전송 (생성 또는 수정 자동 판별) */
@@ -77,13 +69,14 @@ export function useChat() {
       const trimmed = text.trim();
       if (!trimmed) return;
 
+      const { slides } = useCardNewsStore.getState();
       if (slides.length === 0) {
         await generate(trimmed);
       } else {
         await edit(trimmed);
       }
     },
-    [slides.length, generate, edit],
+    [generate, edit],
   );
 
   return { sendMessage, generate, edit };

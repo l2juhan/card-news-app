@@ -58,8 +58,6 @@ export function SlideEditor() {
   const isGenerating = useCardNewsStore((s) => s.isGenerating);
   const setStyle = useCardNewsStore((s) => s.setStyle);
   const setAccentColor = useCardNewsStore((s) => s.setAccentColor);
-  const setEditing = useCardNewsStore((s) => s.setEditing);
-
   const [isOpen, setIsOpen] = useState(false);
 
   // 현재 선택된 슬라이드
@@ -75,16 +73,19 @@ export function SlideEditor() {
   const [localEmphasis, setLocalEmphasis] = useState('');
   const [localType, setLocalType] = useState<SlideType>('content');
 
-  // 슬라이드가 바뀔 때 로컬 상태 동기화
+  // 슬라이드가 바뀔 때 로컬 상태 동기화 (selectedSlide 번호 기준)
+  const slideData = currentSlide;
   useEffect(() => {
-    if (currentSlide) {
-      setLocalHeadline(currentSlide.headline);
-      setLocalBody(currentSlide.body ?? '');
-      setLocalSubtext(currentSlide.subtext ?? '');
-      setLocalEmphasis(currentSlide.emphasis ?? '');
-      setLocalType(currentSlide.type);
+    if (slideData) {
+      setLocalHeadline(slideData.headline);
+      setLocalBody(slideData.body ?? '');
+      setLocalSubtext(slideData.subtext ?? '');
+      setLocalEmphasis(slideData.emphasis ?? '');
+      setLocalType(slideData.type);
     }
-  }, [currentSlide]);
+    // selectedSlide가 바뀔 때만 동기화 (slides 배열 참조 변경으로 로컬 편집이 덮어써지지 않도록)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedSlide]);
 
   // 변경사항이 있는지 확인
   const hasChanges = useMemo(() => {
@@ -121,32 +122,28 @@ export function SlideEditor() {
     }
 
     try {
-      setEditing(true);
+      useCardNewsStore.getState().setEditing(true);
       await window.api.directEdit({
         slideNumber: selectedSlide,
         changes,
       });
     } catch {
-      // 에러는 onError 이벤트로 수신됨
-    } finally {
-      setEditing(false);
+      // 에러는 onError 이벤트로 수신됨 → useIpc에서 setEditing(false) 처리
     }
-  }, [currentSlide, selectedSlide, localHeadline, localBody, localSubtext, localEmphasis, localType, hasChanges, setEditing]);
+  }, [currentSlide, selectedSlide, localHeadline, localBody, localSubtext, localEmphasis, localType, hasChanges]);
 
   // 스타일 변경 (전체 슬라이드 일괄)
   const handleStyleChange = useCallback(
     async (newStyle: StyleName) => {
       setStyle(newStyle);
       try {
-        setEditing(true);
+        useCardNewsStore.getState().setEditing(true);
         await window.api.changeStyle(newStyle);
       } catch {
-        // 에러는 onError 이벤트로 수신됨
-      } finally {
-        setEditing(false);
+        // 에러는 onError 이벤트로 수신됨 → useIpc에서 setEditing(false) 처리
       }
     },
-    [setStyle, setEditing],
+    [setStyle],
   );
 
   // 슬라이드가 없으면 표시 안 함
