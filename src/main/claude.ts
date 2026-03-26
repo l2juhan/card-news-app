@@ -98,7 +98,9 @@ async function consumeStream(
     }
   }
 
-  return { success: true };
+  // result 메시지 없이 스트림 종료 — 예기치 않은 상황
+  callbacks.onError('작업이 완료 메시지 없이 종료되었습니다.');
+  return { success: false, error: 'No result message received' };
 }
 
 // ---------------------------------------------------------------------------

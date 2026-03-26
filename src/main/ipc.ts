@@ -96,7 +96,7 @@ async function runRender(
     args.push('--account', account);
   }
 
-  await execFileAsync('node', args, { cwd: PROJECT_ROOT });
+  await execFileAsync('node', args, { cwd: PROJECT_ROOT, timeout: 120_000 });
   return getImagePaths();
 }
 
@@ -259,6 +259,20 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(IPC_CHANNELS.REORDER_SLIDES, async (_event, newOrder: number[]) => {
     try {
       const slides = readSlides();
+
+      // 검증: newOrder가 모든 슬라이드를 정확히 한 번씩 포함하는지 확인
+      const existingNumbers = new Set(slides.map((s) => s.slide));
+      const newOrderSet = new Set(newOrder);
+      if (
+        newOrder.length !== slides.length ||
+        newOrder.length !== newOrderSet.size ||
+        !newOrder.every((n) => existingNumbers.has(n))
+      ) {
+        sendToRenderer(IPC_CHANNELS.ERROR, {
+          message: '잘못된 슬라이드 순서입니다. 모든 슬라이드가 포함되어야 합니다.',
+        });
+        return;
+      }
 
       // newOrder는 새로운 순서의 slide 번호 배열 (1-based)
       const reordered = newOrder.map((slideNum, idx) => {
