@@ -1,18 +1,36 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { useCardNewsStore } from '../stores/useCardNewsStore';
 import { ChatMessage } from './ChatMessage';
 import { ChatInput } from './ChatInput';
 import { LoadingIndicator } from './LoadingIndicator';
+import { useChat } from '../hooks/useChat';
 
 export function ChatPanel() {
   const messages = useCardNewsStore((s) => s.messages);
   const isGenerating = useCardNewsStore((s) => s.isGenerating);
   const isEditing = useCardNewsStore((s) => s.isEditing);
+  const { sendMessage } = useChat();
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const isBusy = isGenerating || isEditing;
+
+  // 에러 메시지 재시도: 해당 에러 직전의 마지막 user 메시지를 재전송
+  const handleRetry = useCallback(
+    (errorMsgId: string) => {
+      const msgs = useCardNewsStore.getState().messages;
+      const errorIdx = msgs.findIndex((m) => m.id === errorMsgId);
+      if (errorIdx === -1) return;
+      for (let i = errorIdx - 1; i >= 0; i--) {
+        if (msgs[i].role === 'user') {
+          sendMessage(msgs[i].content);
+          return;
+        }
+      }
+    },
+    [sendMessage],
+  );
 
   // ---- 새 메시지가 추가되거나 로딩 상태 변경 시 자동 스크롤 ----
   useEffect(() => {
@@ -31,7 +49,16 @@ export function ChatPanel() {
       {/* 메시지 목록 */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto py-4 space-y-2">
         {messages.map((msg) => (
-          <ChatMessage key={msg.id} message={msg} />
+          <ChatMessage
+            key={msg.id}
+            message={msg}
+            onRetry={
+              msg.role === 'system' &&
+              (msg.content.includes('오류') || msg.content.includes('실패'))
+                ? () => handleRetry(msg.id)
+                : undefined
+            }
+          />
         ))}
 
         {/* 로딩 인디케이터 */}

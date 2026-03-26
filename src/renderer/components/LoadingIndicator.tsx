@@ -1,5 +1,23 @@
 import { useCardNewsStore } from '../stores/useCardNewsStore';
 
+const STAGE_ICONS: [string, string][] = [
+  ['리서치', '🔍'],
+  ['팩트체크', '✓'],
+  ['카피', '✍️'],
+  ['렌더링', '🎨'],
+  ['검토', '👀'],
+  ['내보내기', '📦'],
+  ['수정', '✏️'],
+];
+
+function getStageIcon(status: string): string {
+  const lower = status.toLowerCase();
+  for (const [keyword, icon] of STAGE_ICONS) {
+    if (lower.includes(keyword)) return icon;
+  }
+  return '⏳';
+}
+
 export function LoadingIndicator() {
   const progress = useCardNewsStore((s) => s.progress);
 
@@ -19,14 +37,25 @@ export function LoadingIndicator() {
           <span className="typing-dot w-2 h-2 rounded-full bg-text-tertiary animation-delay-300" />
         </div>
 
-        {/* 진행 상태 텍스트 */}
+        {/* 진행 상태 텍스트 + 프로그레스 바 */}
         {progress && (
-          <div className="mt-2 flex items-center gap-2 text-xs text-text-secondary">
-            <span>{progress.status}</span>
+          <div className="mt-2">
+            <div className="flex items-center gap-2 text-xs text-text-secondary">
+              <span>{getStageIcon(progress.status)}</span>
+              <span>{progress.status}</span>
+              {progress.percent > 0 && (
+                <span className="tabular-nums font-medium text-primary">
+                  {progress.percent}%
+                </span>
+              )}
+            </div>
             {progress.percent > 0 && (
-              <span className="tabular-nums font-medium text-primary">
-                {progress.percent}%
-              </span>
+              <div className="mt-1.5 h-1 bg-surface-tertiary rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-primary rounded-full transition-all duration-300"
+                  style={{ width: `${Math.min(progress.percent, 100)}%` }}
+                />
+              </div>
             )}
           </div>
         )}

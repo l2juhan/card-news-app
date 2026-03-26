@@ -2,9 +2,11 @@ import { SideNav } from './components/SideNav';
 import { ChatPanel } from './components/ChatPanel';
 import { PreviewPanel } from './components/PreviewPanel';
 import { useIpc } from './hooks/useIpc';
+import { useKeyboard } from './hooks/useKeyboard';
 
 function App() {
   useIpc();
+  useKeyboard();
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-surface">
