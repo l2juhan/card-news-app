@@ -73,19 +73,20 @@ export function SlideEditor() {
   const [localEmphasis, setLocalEmphasis] = useState('');
   const [localType, setLocalType] = useState<SlideType>('content');
 
-  // 슬라이드가 바뀔 때 로컬 상태 동기화 (selectedSlide 번호 기준)
-  const slideData = currentSlide;
+  // 슬라이드가 바뀔 때 로컬 상태 동기화
+  // selectedSlide 변경 또는 null→슬라이드 전환(첫 생성) 시 트리거
+  const hasSlide = currentSlide !== null;
   useEffect(() => {
-    if (slideData) {
-      setLocalHeadline(slideData.headline);
-      setLocalBody(slideData.body ?? '');
-      setLocalSubtext(slideData.subtext ?? '');
-      setLocalEmphasis(slideData.emphasis ?? '');
-      setLocalType(slideData.type);
+    if (currentSlide) {
+      setLocalHeadline(currentSlide.headline);
+      setLocalBody(currentSlide.body ?? '');
+      setLocalSubtext(currentSlide.subtext ?? '');
+      setLocalEmphasis(currentSlide.emphasis ?? '');
+      setLocalType(currentSlide.type);
     }
-    // selectedSlide가 바뀔 때만 동기화 (slides 배열 참조 변경으로 로컬 편집이 덮어써지지 않도록)
+    // slides 배열 참조 변경으로 로컬 편집이 덮어써지지 않도록 selectedSlide + hasSlide만 감시
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedSlide]);
+  }, [selectedSlide, hasSlide]);
 
   // 변경사항이 있는지 확인
   const hasChanges = useMemo(() => {
@@ -122,7 +123,9 @@ export function SlideEditor() {
     }
 
     try {
-      useCardNewsStore.getState().setEditing(true);
+      const store = useCardNewsStore.getState();
+      store.setEditing(true);
+      store.updateSlide(selectedSlide, changes);
       await window.api.directEdit({
         slideNumber: selectedSlide,
         changes,
@@ -135,10 +138,10 @@ export function SlideEditor() {
   // 스타일 변경 (전체 슬라이드 일괄)
   const handleStyleChange = useCallback(
     async (newStyle: StyleName) => {
-      setStyle(newStyle);
       try {
         useCardNewsStore.getState().setEditing(true);
         await window.api.changeStyle(newStyle);
+        setStyle(newStyle);
       } catch {
         // 에러는 onError 이벤트로 수신됨 → useIpc에서 setEditing(false) 처리
       }

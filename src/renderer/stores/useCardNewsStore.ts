@@ -60,6 +60,7 @@ interface CardNewsState {
 
   // -- 액션: 슬라이드 --
   setSlides: (slides: Slide[], imagePaths: string[]) => void;
+  updateSlide: (slideNumber: number, updatedSlide: Partial<Slide>) => void;
   updateSlideImage: (slideNumber: number, imagePath: string) => void;
   updateAllImages: (imagePaths: string[]) => void;
   selectSlide: (slideNumber: number) => void;
@@ -120,7 +121,21 @@ export const useCardNewsStore = create<CardNewsState>((set) => ({
 
   // -- 슬라이드 --
   setSlides: (slides, imagePaths) =>
-    set({ slides, imagePaths, selectedSlide: 1 }),
+    set((state) => {
+      // 기존 슬라이드가 없었으면 (최초 생성) 1번으로, 있었으면 현재 선택 유지
+      const selectedSlide =
+        state.slides.length === 0
+          ? 1
+          : Math.min(state.selectedSlide, slides.length);
+      return { slides, imagePaths, selectedSlide };
+    }),
+
+  updateSlide: (slideNumber, updatedSlide) =>
+    set((state) => ({
+      slides: state.slides.map((s) =>
+        s.slide === slideNumber ? { ...s, ...updatedSlide } : s,
+      ),
+    })),
 
   updateSlideImage: (slideNumber, imagePath) =>
     set((state) => {
