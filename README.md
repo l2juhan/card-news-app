@@ -77,26 +77,41 @@ npm run package
 ```
 card-news-app/
 ├── src/
-│   ├── main/           # Electron Main Process
-│   │   └── index.ts    # 앱 진입점, BrowserWindow 생성
-│   ├── preload/        # Preload 스크립트
-│   │   └── index.ts    # contextBridge API 노출
-│   ├── renderer/       # React Renderer Process
-│   │   ├── index.html
-│   │   ├── main.tsx
-│   │   └── App.tsx
+│   ├── main/              # Electron Main Process
+│   │   ├── index.ts       # 앱 진입점, BrowserWindow 생성
+│   │   ├── ipc.ts         # IPC 핸들러 (생성/편집/내보내기)
+│   │   ├── claude.ts      # Claude Code SDK 래퍼
+│   │   ├── renderer.ts    # Puppeteer HTML→PNG 렌더링
+│   │   └── template.ts    # 템플릿 로드 및 플레이스홀더 치환
+│   ├── preload/           # Preload 스크립트
+│   │   └── index.ts       # contextBridge API 노출
+│   ├── renderer/          # React Renderer Process
+│   │   ├── App.tsx        # 3패널 레이아웃 (사이드바|채팅|미리보기)
+│   │   ├── components/    # UI 컴포넌트 (10개)
+│   │   ├── hooks/         # useIpc, useChat
+│   │   ├── stores/        # Zustand 스토어
+│   │   └── styles/        # Tailwind CSS 글로벌 스타일
 │   └── shared/
-│       └── types.ts    # Main/Renderer 공유 타입 정의
-├── templates/ → symlink  # 12개 스타일 HTML 템플릿
-├── scripts/ → symlink    # render.js (Puppeteer 렌더러)
-├── config.json → symlink # 템플릿 설정
-├── workspace/            # 런타임 작업 공간 (slides.json 등)
-├── output/               # 생성된 PNG 출력
+│       └── types.ts       # Main/Renderer 공유 타입 정의
+├── templates/ → symlink   # 12개 스타일 HTML 템플릿
+├── scripts/ → symlink     # render.js (Puppeteer 렌더러)
+├── config.json → symlink  # 템플릿 설정
+├── workspace/             # 런타임 작업 공간 (slides.json 등)
+├── output/                # 생성된 PNG 출력
 ├── vite.config.ts
 ├── tsconfig.json
 ├── tsconfig.main.json
 └── tsconfig.renderer.json
 ```
+
+## 구현 현황
+
+- [x] Phase 1: Electron + React + TypeScript 기반 구축
+- [x] Phase 2: 템플릿 시스템 Symlink 연동
+- [x] Phase 3: Claude Agent SDK 연동 및 IPC 파이프라인
+- [x] Phase 4: React UI 구현 (3패널 레이아웃, 채팅, 미리보기, 편집)
+- [ ] Phase 5: 내보내기 및 UX 개선
+- [ ] Phase 6: 배포 준비
 
 ## 전제 조건
 
