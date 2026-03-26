@@ -59,7 +59,7 @@ export function useIpc() {
       s.setEditing(false);
       s.setProgress(null);
 
-      const msg = error.message.toLowerCase();
+      const msg = (error.message ?? '').toLowerCase();
       const isClaudeNotFound = msg.includes('enoent') && msg.includes('claude');
       s.addMessage({
         role: 'system',
