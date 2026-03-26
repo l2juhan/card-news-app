@@ -1,4 +1,6 @@
-import { ipcMain, BrowserWindow } from 'electron';
+import { ipcMain, BrowserWindow, dialog } from 'electron';
+import { execFile } from 'child_process';
+import { promisify } from 'util';
 import path from 'path';
 import fs from 'fs';
 import {
@@ -71,10 +73,7 @@ async function runRender(
   accent?: string,
   account?: string,
 ): Promise<string[]> {
-  const { execFile } = await import('child_process');
-  const { promisify } = await import('util');
   const execFileAsync = promisify(execFile);
-
   const config = getConfig();
   const renderScript = path.join(PROJECT_ROOT, 'scripts', 'render.js');
   const slidesPath = getSlidesPath();
@@ -293,10 +292,8 @@ export function registerIpcHandlers(): void {
   });
 
   // --- card-news:export ---
-  ipcMain.handle(IPC_CHANNELS.EXPORT, async (_event, request: ExportRequest) => {
+  ipcMain.handle(IPC_CHANNELS.EXPORT, async (_event, _request: ExportRequest) => {
     try {
-      const { dialog } = await import('electron');
-
       // 사용자에게 저장 폴더 선택
       const result = await dialog.showOpenDialog({
         properties: ['openDirectory', 'createDirectory'],
