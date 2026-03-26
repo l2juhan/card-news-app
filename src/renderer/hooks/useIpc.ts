@@ -58,9 +58,14 @@ export function useIpc() {
       s.setGenerating(false);
       s.setEditing(false);
       s.setProgress(null);
+
+      const msg = error.message.toLowerCase();
+      const isClaudeNotFound = msg.includes('enoent') && msg.includes('claude');
       s.addMessage({
         role: 'system',
-        content: `오류가 발생했습니다: ${error.message}`,
+        content: isClaudeNotFound
+          ? 'Claude Code가 설치되어 있지 않거나 실행할 수 없습니다.\nhttps://claude.ai/code 에서 설치해주세요.'
+          : `오류가 발생했습니다: ${error.message}`,
       });
     });
 

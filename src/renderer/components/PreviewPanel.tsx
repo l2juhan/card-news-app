@@ -2,6 +2,8 @@ import { useCardNewsStore } from '../stores/useCardNewsStore';
 import { PhoneMockup } from './PhoneMockup';
 import { SlideNavigator } from './SlideNavigator';
 import { SlideEditor } from './SlideEditor';
+import { SlideGrid } from './SlideGrid';
+import { ExportButton } from './ExportButton';
 
 export function PreviewPanel() {
   const slides = useCardNewsStore((s) => s.slides);
@@ -10,13 +12,16 @@ export function PreviewPanel() {
   return (
     <div className="flex flex-col h-full bg-surface-secondary">
       {/* 헤더 */}
-      <div className="flex items-center px-4 h-12 border-b border-border shrink-0">
-        <h2 className="text-sm font-semibold text-text">미리보기</h2>
-        {hasSlides && (
-          <span className="ml-2 text-xs text-text-tertiary">
-            {slides.length}장
-          </span>
-        )}
+      <div className="flex items-center justify-between px-4 h-12 border-b border-border shrink-0">
+        <div className="flex items-center">
+          <h2 className="text-sm font-semibold text-text">미리보기</h2>
+          {hasSlides && (
+            <span className="ml-2 text-xs text-text-tertiary">
+              {slides.length}장
+            </span>
+          )}
+        </div>
+        <ExportButton />
       </div>
 
       {/* 본문 */}
@@ -28,6 +33,9 @@ export function PreviewPanel() {
 
             {/* 슬라이드 네비게이터 */}
             <SlideNavigator />
+
+            {/* 슬라이드 그리드 (드래그 앤 드롭) */}
+            <SlideGrid />
 
             {/* 직접 편집 패널 */}
             <div className="w-full px-4">

@@ -26,18 +26,31 @@ function formatRelativeTime(timestamp: number): string {
 
 interface ChatMessageProps {
   message: ChatMessageType;
+  onRetry?: () => void;
 }
 
-export function ChatMessage({ message }: ChatMessageProps) {
+export function ChatMessage({ message, onRetry }: ChatMessageProps) {
   const { role, content, timestamp } = message;
 
   // ---- system 메시지 ----
   if (role === 'system') {
     return (
       <div className="flex justify-center px-5 py-1.5">
-        <span className="text-xs text-text-secondary bg-surface-tertiary rounded-full px-3 py-1 text-center max-w-md">
-          {content}
-        </span>
+        <div className="flex flex-col items-center gap-1.5">
+          <span className="text-xs text-text-secondary bg-surface-tertiary rounded-full px-3 py-1 text-center max-w-md">
+            {content}
+          </span>
+          {onRetry && (
+            <button
+              type="button"
+              onClick={onRetry}
+              className="text-[11px] text-primary hover:text-primary-dark border border-primary/30 hover:border-primary
+                         rounded-full px-3 py-0.5 transition-colors cursor-pointer"
+            >
+              다시 시도
+            </button>
+          )}
+        </div>
       </div>
     );
   }
