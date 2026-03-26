@@ -87,8 +87,8 @@ card-news-app/
 │   │   └── index.ts       # contextBridge API 노출
 │   ├── renderer/          # React Renderer Process
 │   │   ├── App.tsx        # 3패널 레이아웃 (사이드바|채팅|미리보기)
-│   │   ├── components/    # UI 컴포넌트 (10개)
-│   │   ├── hooks/         # useIpc, useChat
+│   │   ├── components/    # UI 컴포넌트 (12개)
+│   │   ├── hooks/         # useIpc, useChat, useExport, useKeyboard
 │   │   ├── stores/        # Zustand 스토어
 │   │   └── styles/        # Tailwind CSS 글로벌 스타일
 │   └── shared/
@@ -110,7 +110,7 @@ card-news-app/
 - [x] Phase 2: 템플릿 시스템 Symlink 연동
 - [x] Phase 3: Claude Agent SDK 연동 및 IPC 파이프라인
 - [x] Phase 4: React UI 구현 (3패널 레이아웃, 채팅, 미리보기, 편집)
-- [ ] Phase 5: 내보내기 및 UX 개선
+- [x] Phase 5: 내보내기 및 UX 개선
 - [ ] Phase 6: 배포 준비
 
 ## 전제 조건
