@@ -15,6 +15,7 @@ import {
   type AppConfig,
 } from '../shared/types';
 import { generateCardNews, editCardNews, changeStyle } from './claude';
+import { checkForUpdatesManual, installUpdate } from './updater';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -303,6 +304,16 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(IPC_CHANNELS.GET_STYLES, async () => {
     const config = getConfig();
     return config.templates as Record<StyleName, StyleConfig>;
+  });
+
+  // --- app:check-updates ---
+  ipcMain.handle(IPC_CHANNELS.APP_CHECK_UPDATES, async () => {
+    await checkForUpdatesManual();
+  });
+
+  // --- app:install-update ---
+  ipcMain.handle(IPC_CHANNELS.APP_INSTALL_UPDATE, async () => {
+    installUpdate();
   });
 
   // --- card-news:export ---

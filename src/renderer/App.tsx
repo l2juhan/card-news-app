@@ -1,6 +1,7 @@
 import { SideNav } from './components/SideNav';
 import { ChatPanel } from './components/ChatPanel';
 import { PreviewPanel } from './components/PreviewPanel';
+import { UpdateNotification } from './components/UpdateNotification';
 import { useIpc } from './hooks/useIpc';
 import { useKeyboard } from './hooks/useKeyboard';
 
@@ -22,6 +23,9 @@ function App() {
       <div className="w-[420px] min-w-[380px] border-l border-border">
         <PreviewPanel />
       </div>
+
+      {/* 자동 업데이트 알림 (다운로드/완료 시 우하단 표시) */}
+      <UpdateNotification />
     </div>
   );
 }
