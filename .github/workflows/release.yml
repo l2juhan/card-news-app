@@ -1,0 +1,74 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: '릴리스할 태그 (예: v0.1.0)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Release (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout card-news-app
+        uses: actions/checkout@v4
+        with:
+          path: card-news-app
+          ref: ${{ github.event.inputs.tag || github.ref }}
+
+      - name: Checkout instagram-card-news (symlink target)
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/instagram-card-news
+          path: instagram-card-news
+          token: ${{ secrets.SUBMODULE_PAT || secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: card-news-app/package-lock.json
+
+      - name: Install dependencies
+        working-directory: card-news-app
+        run: npm ci
+
+      - name: Type check
+        working-directory: card-news-app
+        run: npm run typecheck
+
+      - name: Build & Publish (macOS)
+        if: matrix.os == 'macos-latest'
+        working-directory: card-news-app
+        run: npm run release -- --mac
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # 코드 서명/공증을 사용할 경우 아래 secrets를 설정한다 (없으면 unsigned 빌드)
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+
+      - name: Build & Publish (Windows)
+        if: matrix.os == 'windows-latest'
+        working-directory: card-news-app
+        run: npm run release -- --win
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
