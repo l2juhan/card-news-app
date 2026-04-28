@@ -66,6 +66,12 @@ npm run pack
 npm run release
 ```
 
+> **macOS 로컬 빌드 시:** Xcode "Apple Development" 인증서가 키체인에 있으면 electron-builder가 이를 자동 사용하려다 timestamp 서비스 권한이 없어 실패합니다. 로컬에서는 unsigned 빌드로 진행하세요.
+>
+> ```bash
+> CSC_IDENTITY_AUTO_DISCOVERY=false npm run package:mac
+> ```
+
 ## 배포
 
 ### GitHub Actions 자동 배포
