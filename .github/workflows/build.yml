@@ -33,6 +33,16 @@ jobs:
           path: instagram-card-news
           token: ${{ secrets.SUBMODULE_PAT || secrets.GITHUB_TOKEN }}
 
+      - name: Resolve symlinks (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        working-directory: card-news-app
+        run: |
+          Remove-Item -Recurse -Force templates, scripts, config.json -ErrorAction SilentlyContinue
+          Copy-Item -Recurse ..\instagram-card-news\templates templates
+          Copy-Item -Recurse ..\instagram-card-news\scripts scripts
+          Copy-Item ..\instagram-card-news\config.json config.json
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
