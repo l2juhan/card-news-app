@@ -51,8 +51,63 @@ npm run typecheck
 # 빌드
 npm run build
 
-# 패키징
+# 패키징 (현재 OS)
 npm run package
+
+# 플랫폼별 패키징
+npm run package:mac     # macOS DMG/zip (x64 + arm64)
+npm run package:win     # Windows NSIS 인스톨러
+npm run package:linux   # Linux AppImage
+
+# 빌드 검증 (smoke test, 인스톨러 없이 unpacked 디렉토리만)
+npm run pack
+
+# GitHub Release 게시 (태그 기반 자동 배포)
+npm run release
+```
+
+> **macOS 로컬 빌드 시:** Xcode "Apple Development" 인증서가 키체인에 있으면 electron-builder가 이를 자동 사용하려다 timestamp 서비스 권한이 없어 실패합니다. 로컬에서는 unsigned 빌드로 진행하세요.
+>
+> ```bash
+> CSC_IDENTITY_AUTO_DISCOVERY=false npm run package:mac
+> ```
+
+## 배포
+
+### GitHub Actions 자동 배포
+
+`v*` 태그를 푸시하면 `.github/workflows/release.yml`이 트리거되어 macOS/Windows 빌드를 GitHub Release에 자동 게시합니다.
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+### 필요한 GitHub Secrets
+
+| Secret | 용도 | 필수 여부 |
+|--------|------|-----------|
+| `SUBMODULE_PAT` | private `instagram-card-news` 저장소 체크아웃용 PAT | private 저장소면 필수 |
+| `CSC_LINK` | macOS 코드 서명 인증서 (base64 또는 URL) | 서명 빌드 시 |
+| `CSC_KEY_PASSWORD` | macOS 인증서 암호 | 서명 빌드 시 |
+| `APPLE_ID` | macOS 공증용 Apple ID | 공증 시 |
+| `APPLE_APP_SPECIFIC_PASSWORD` | Apple ID 앱 전용 암호 | 공증 시 |
+| `APPLE_TEAM_ID` | Apple Developer Team ID | 공증 시 |
+| `WIN_CSC_LINK` | Windows 코드 서명 인증서 | 서명 빌드 시 |
+| `WIN_CSC_KEY_PASSWORD` | Windows 인증서 암호 | 서명 빌드 시 |
+
+코드 서명 secrets가 없으면 unsigned 빌드로 진행됩니다 (macOS는 사용자가 "확인되지 않은 개발자" 경고를 우회해야 함).
+
+### 자동 업데이트
+
+`electron-updater`가 GitHub Releases의 `latest-mac.yml` / `latest.yml` 메타파일을 폴링합니다. 앱 시작 시 자동 체크되며, 다운로드 완료 시 우하단 토스트로 사용자에게 재시작을 안내합니다.
+
+### 앱 아이콘 갱신
+
+`build/icon.html`을 수정한 뒤 다음 명령으로 PNG/ICNS를 재생성합니다:
+
+```bash
+node build/generate-icons.cjs
 ```
 
 ## 지원 템플릿 스타일

@@ -1,0 +1,71 @@
+name: Build Verification
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout card-news-app
+        uses: actions/checkout@v4
+        with:
+          path: card-news-app
+
+      - name: Checkout instagram-card-news (symlink target)
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/instagram-card-news
+          path: instagram-card-news
+          token: ${{ secrets.SUBMODULE_PAT || secrets.GITHUB_TOKEN }}
+
+      - name: Resolve symlinks (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        working-directory: card-news-app
+        run: |
+          Remove-Item -Recurse -Force templates, scripts, config.json -ErrorAction SilentlyContinue
+          Copy-Item -Recurse ..\instagram-card-news\templates templates
+          Copy-Item -Recurse ..\instagram-card-news\scripts scripts
+          Copy-Item ..\instagram-card-news\config.json config.json
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: card-news-app/package-lock.json
+
+      - name: Install dependencies
+        working-directory: card-news-app
+        run: npm ci
+
+      - name: Type check
+        working-directory: card-news-app
+        run: npm run typecheck
+
+      - name: Build
+        working-directory: card-news-app
+        run: npm run build
+
+      - name: Pack (electron-builder smoke test)
+        working-directory: card-news-app
+        run: npm run pack
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # CI 러너에는 코드 서명 인증서가 없으므로 키체인 자동 검색을 끈다
+          CSC_IDENTITY_AUTO_DISCOVERY: false

@@ -236,6 +236,43 @@ export interface ErrorEvent {
 }
 
 // -----------------------------------------------------------------------------
+// Auto-Update
+// -----------------------------------------------------------------------------
+
+/** 자동 업데이트 상태 */
+export type UpdateStatusKind =
+  | 'checking'
+  | 'available'
+  | 'not-available'
+  | 'downloading'
+  | 'downloaded'
+  | 'error';
+
+/** 업데이트 메타데이터 */
+export interface UpdateInfo {
+  version: string;
+  releaseDate?: string;
+  releaseNotes?: string;
+}
+
+/** 다운로드 진행 상황 */
+export interface UpdateProgress {
+  percent: number;
+  bytesPerSecond: number;
+  transferred: number;
+  total: number;
+}
+
+/** 업데이트 상태 이벤트 (Main -> Renderer) */
+export type UpdateStatusEvent =
+  | { kind: 'checking' }
+  | { kind: 'available'; info: UpdateInfo }
+  | { kind: 'not-available'; info?: UpdateInfo }
+  | { kind: 'downloading'; progress: UpdateProgress }
+  | { kind: 'downloaded'; info: UpdateInfo }
+  | { kind: 'error'; message: string };
+
+// -----------------------------------------------------------------------------
 // IPC Channel Names
 // -----------------------------------------------------------------------------
 
@@ -249,6 +286,8 @@ export const IPC_CHANNELS = {
   REORDER_SLIDES: 'card-news:reorder-slides',
   EXPORT: 'card-news:export',
   GET_STYLES: 'card-news:get-styles',
+  APP_CHECK_UPDATES: 'app:check-updates',
+  APP_INSTALL_UPDATE: 'app:install-update',
 
   // Main -> Renderer (send)
   PROGRESS: 'card-news:progress',
@@ -257,6 +296,7 @@ export const IPC_CHANNELS = {
   SLIDES_RERENDERED: 'card-news:slides-rerendered',
   EXPORTED: 'card-news:exported',
   ERROR: 'card-news:error',
+  APP_UPDATE_STATUS: 'app:update-status',
 } as const;
 
 export type IpcChannel = (typeof IPC_CHANNELS)[keyof typeof IPC_CHANNELS];
@@ -311,6 +351,17 @@ export interface IpcApi {
 
   /** 오류 수신 */
   onError(callback: (error: ErrorEvent) => void): () => void;
+
+  // -- 자동 업데이트 --
+
+  /** 업데이트 확인 요청 */
+  checkForUpdates(): Promise<void>;
+
+  /** 다운로드된 업데이트 설치 (앱 재시작) */
+  installUpdate(): Promise<void>;
+
+  /** 업데이트 상태 이벤트 수신 */
+  onUpdateStatus(callback: (event: UpdateStatusEvent) => void): () => void;
 }
 
 // -----------------------------------------------------------------------------

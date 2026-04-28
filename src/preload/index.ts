@@ -10,6 +10,7 @@ import {
   type ProgressEvent,
   type CardNewsResult,
   type ErrorEvent,
+  type UpdateStatusEvent,
 } from '../shared/types';
 
 /** IPC 이벤트 리스너 등록 헬퍼 (해제 함수 반환) */
@@ -77,6 +78,20 @@ const api: IpcApi = {
 
   onError(callback: (error: ErrorEvent) => void): () => void {
     return onChannel(IPC_CHANNELS.ERROR, callback);
+  },
+
+  // -- 자동 업데이트 --
+
+  checkForUpdates(): Promise<void> {
+    return ipcRenderer.invoke(IPC_CHANNELS.APP_CHECK_UPDATES);
+  },
+
+  installUpdate(): Promise<void> {
+    return ipcRenderer.invoke(IPC_CHANNELS.APP_INSTALL_UPDATE);
+  },
+
+  onUpdateStatus(callback: (event: UpdateStatusEvent) => void): () => void {
+    return onChannel(IPC_CHANNELS.APP_UPDATE_STATUS, callback);
   },
 };
 

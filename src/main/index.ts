@@ -1,6 +1,7 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
 import { registerIpcHandlers } from './ipc';
+import { initAutoUpdater, checkForUpdatesOnStartup } from './updater';
 
 const isDev = !app.isPackaged;
 
@@ -27,7 +28,13 @@ function createWindow(): BrowserWindow {
 
 app.whenReady().then(() => {
   registerIpcHandlers();
-  createWindow();
+  initAutoUpdater();
+  const window = createWindow();
+
+  // 윈도우가 표시된 직후 업데이트 체크 (Renderer가 이벤트를 받을 준비가 된 시점)
+  window.webContents.once('did-finish-load', () => {
+    void checkForUpdatesOnStartup();
+  });
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {

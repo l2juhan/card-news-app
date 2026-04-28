@@ -1,0 +1,93 @@
+appId: com.cardnews.generator
+productName: Card News Generator
+copyright: Copyright © 2026 Card News Generator
+
+directories:
+  output: release
+  buildResources: build
+
+files:
+  - dist/**/*
+  - package.json
+  - "!**/*.{ts,tsx,map,md}"
+  - "!**/{.git,.github,.history,output,workspace,release}/**/*"
+  - "!**/CLAUDE.md"
+  - "!**/PLAN.md"
+  - "!**/SRS.md"
+  - "!**/README.md"
+
+extraResources:
+  - from: templates
+    to: templates
+    filter:
+      - "**/*"
+  - from: scripts
+    to: scripts
+    filter:
+      - "**/*.js"
+  - from: config.json
+    to: config.json
+
+asar: true
+asarUnpack:
+  - node_modules/puppeteer/**/*
+  - node_modules/puppeteer-core/**/*
+  - node_modules/@puppeteer/**/*
+  - node_modules/@anthropic-ai/claude-agent-sdk/**/*
+
+mac:
+  category: public.app-category.graphics-design
+  icon: build/icon.icns
+  target:
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+    - target: zip
+      arch:
+        - x64
+        - arm64
+  hardenedRuntime: true
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
+  gatekeeperAssess: false
+  notarize: false
+
+dmg:
+  contents:
+    - x: 130
+      y: 220
+    - x: 410
+      y: 220
+      type: link
+      path: /Applications
+  window:
+    width: 540
+    height: 380
+
+win:
+  icon: build/icon.png
+  target:
+    - target: nsis
+      arch:
+        - x64
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Card News Generator
+
+linux:
+  icon: build/icon.png
+  category: Graphics
+  target:
+    - target: AppImage
+      arch:
+        - x64
+
+publish:
+  provider: github
+  releaseType: release
