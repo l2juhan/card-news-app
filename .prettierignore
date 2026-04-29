@@ -1,0 +1,12 @@
+dist/
+release/
+build/
+node_modules/
+output/
+workspace/
+templates/
+scripts/
+.history/
+*.lock
+package-lock.json
+config.json

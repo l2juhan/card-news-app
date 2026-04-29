@@ -1,0 +1,38 @@
+---
+name: 🎨 Design / UX
+about: 디자인 시스템 또는 UX 개선
+title: "[Design] "
+labels: ["type:design"]
+assignees: []
+---
+
+## 개요
+<!-- 어떤 디자인/UX 개선인가? -->
+
+## 현재 상태
+<!-- 현재 화면/플로우의 문제점, 가능하면 스크린샷 -->
+
+## 제안
+<!-- 변경하려는 디자인/UX. Figma 링크, 목업, 참고 이미지 -->
+
+## 디자인 토큰 영향
+- [ ] 색상 (accent, background, text):
+- [ ] 타이포그래피:
+- [ ] 스페이싱 / 라운딩:
+- [ ] 새 컴포넌트 추가 필요 여부:
+- [ ] 기존 공용 컴포넌트 수정 여부:
+
+## 영향 범위
+- 적용 라벨: <!-- area:renderer / area:main / area:preload / area:template / area:build -->
+- 영향받는 화면/컴포넌트:
+- 카드뉴스 템플릿(`templates/`)에 영향 여부: yes / no
+  <!-- 영향이 있다면 ../instagram-card-news/ 원본 수정이 필요할 수 있음 -->
+
+## 완료 기준
+- [ ] 디자인 토큰 docs/DESIGN.md 반영
+- [ ] 컴포넌트 리팩터링 (분리 패턴 유지)
+- [ ] 시각 검증 (스크린샷 또는 빌드 후 확인)
+
+## 참고
+- Figma:
+- 관련 이슈:
