@@ -46,7 +46,7 @@ gh issue view {N} --json number,title,body,labels,assignees,milestone,state,url
 
 ## Step 3: 작업 계획 생성
 
-`docs/exec-plans/{YYYY-MM-DD}-issue-{N}.md` 생성:
+`docs/exec-plans/{YYYY-MM-DD-HHMM}-issue-{N}.md` 생성 (같은 이슈를 같은 날 재실행해도 덮어쓰지 않도록 시각 포함):
 
 ```markdown
 # Issue #{N}: {title}
@@ -91,7 +91,7 @@ gh issue comment {N} --body "🚀 작업 시작 (claude-code 자동 진행)
 
 작업 영역에 따라 에이전트에게 위임. 위임 형식:
 
-```
+```text
 다음 이슈를 처리해줘.
 
 ## Issue #{N}: {title}

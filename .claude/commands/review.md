@@ -15,8 +15,12 @@ description: card-news-app 변경사항을 별도 컨텍스트의 QA 에이전�
 - 인자 없음 + 브랜치가 main: `git diff HEAD~1`로 최근 커밋 리뷰
 
 ```bash
-git branch --show-current
-git diff main...HEAD --stat 2>/dev/null || git diff HEAD~1 --stat
+CURRENT_BRANCH=$(git branch --show-current)
+if [ "$CURRENT_BRANCH" = "main" ]; then
+  git diff HEAD~1 --stat
+else
+  git diff main...HEAD --stat 2>/dev/null || git diff HEAD~1 --stat
+fi
 ```
 
 ## 2. QA 에이전트 호출 (별도 컨텍스트)

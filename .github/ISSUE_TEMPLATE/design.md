@@ -23,6 +23,7 @@ assignees: []
 - [ ] 기존 공용 컴포넌트 수정 여부:
 
 ## 영향 범위
+- 적용 라벨: <!-- area:renderer / area:main / area:preload / area:template / area:build -->
 - 영향받는 화면/컴포넌트:
 - 카드뉴스 템플릿(`templates/`)에 영향 여부: yes / no
   <!-- 영향이 있다면 ../instagram-card-news/ 원본 수정이 필요할 수 있음 -->

@@ -13,4 +13,4 @@ description: "premium 템플릿 스타일 가이드. /card-news 파이프라인�
 
 ## 사용 가능한 슬라이드 타입
 
-공통 14종: `cover`, `content`, `content-stat`, `content-quote`, `cta`, `content-image`, `content-steps`, `content-list`, `content-badge`, `content-split`, `content-highlight`, `content-grid`, `content-bigdata`, `content-fullimage`
+공통 14종 (정의: [style-shared.md](./style-shared.md))

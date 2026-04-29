@@ -22,6 +22,15 @@
 | 의존성 건강 | C | — | `npm audit` 시점 10건(5 moderate + 5 high). transitive 위주이며 직접 영향 영역 점검 필요 |
 | 문서 ↔ 코드 정합성 | B | — | CLAUDE.md / docs/FRONTEND·DESIGN 신규 작성 직후. 첫 `/health` 실행 시 본격 평가 |
 
+> **측정 메타데이터** (시점 의존 지표 재현용)
+> - 측정 일시: 2026-04-28
+> - 컴포넌트 수: `find src/renderer/components -name '*.tsx' | wc -l`
+> - any 카운트: `grep -rE ':\s*any\b|<any>|\bas\s+any\b' src/ | wc -l`
+> - console.* 카운트: `grep -rE 'console\.(log|error|warn|info|debug)\(' src/ | wc -l`
+> - 의존성 취약점: `npm audit --json` (10건: moderate 5 / high 5)
+> - IPC 채널 수: `grep -rE "card-news:|app:" src/main/ipc.ts src/preload/index.ts src/shared/types.ts`
+> 다음 `/quality` 실행 시 동일 명령으로 재측정하여 변화량 산출.
+
 ## 등급 체계 정의
 
 | 등급 | 의미 |

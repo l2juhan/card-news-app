@@ -39,4 +39,4 @@ description: "linux 템플릿 스타일 가이드. /card-news 파이프라인에
 
 ## 사용 가능한 슬라이드 타입
 
-공통 14종 + `content-code`
+공통 14종 (정의: [style-shared.md](./style-shared.md)) + `content-code`

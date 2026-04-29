@@ -64,12 +64,14 @@ description: card-news-app 품질 등급 재평가 — docs/QUALITY_SCORE.md의 
 - 표 갱신
 - "마지막 평가" 날짜 업데이트
 - "갱신 이력" 표 상단에 새 행 추가:
-  ```
+
+  ```markdown
   | 2026-04-28 | /quality 자동 실행 | 컴포넌트 재사용성 C→B (P/C 분리 진척) ... |
   ```
 
 ### 5. 보고
-```
+
+```markdown
 ## /quality 결과 — {YYYY-MM-DD}
 
 ### 변화

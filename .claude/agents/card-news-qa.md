@@ -23,8 +23,8 @@ model: opus
 
 #### 1. 타입/린트
 - `npm run typecheck`(main + renderer 둘 다) 통과 확인
-- (Phase 2 도입 후) `npm run lint` 통과 확인
-- (Phase 2 도입 후) PostToolUse Hook이 자동 수정한 항목이 있는지 로그 확인 → 자동 수정이 의미를 바꾸지 않았는지 점검
+- `npm run lint` 통과 확인
+- PostToolUse Hook이 자동 수정한 항목이 있는지 로그 확인 → 자동 수정이 의미를 바꾸지 않았는지 점검
 
 #### 2. IPC 정합성
 - 새/변경된 IPC 채널마다 다음 4곳이 일치하는지:
@@ -74,7 +74,7 @@ model: opus
 | **suggestion** | 새 패턴/리팩터링 아이디어 | 별도 이슈로 등록 제안 |
 
 ### 반복 패턴 감지 → 피드백 루프 트리거
-- 동일 패턴이 **2회 이상** 반려되면 `harness-feedback` 스킬(Phase 2 생성 예정)에 보강 제안 알림.
+- 동일 패턴이 **2회 이상** 반려되면 `harness-feedback` 스킬에 보강 제안 알림.
   - Level 1: docs/FRONTEND.md에 규칙 추가
   - Level 2: ESLint 규칙 추가
   - Level 2.5: 기존 ESLint 규칙의 교정 지시(remediation message) 업데이트

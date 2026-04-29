@@ -69,6 +69,12 @@ description: "새 템플릿 스타일 생성. '템플릿 만들어줘', '새 스
 6. **word-break**: 한글 텍스트에 `word-break: keep-all` 적용
 7. **여백**: padding 80px 기준, 텍스트가 프레임을 벗어나지 않도록 max-width 설정
 8. **남은 placeholder 정리**: render.js가 미사용 placeholder를 자동 제거하므로 선택적 필드도 안전
+9. **입력값 안전성 — 기본 escape**: `{{headline}}`, `{{body}}`, `{{subtext}}` 등 일반 텍스트 placeholder는 HTML escape 전제로 작성한다(사용자가 `<`, `>`, `&`를 입력해도 그대로 표시되어야 한다). 텍스트 자리에 직접 HTML 태그를 인터폴레이션하는 마크업 작성 금지.
+10. **제한적 HTML 허용 — allowlist**: HTML 삽입이 필요한 필드는 명시적으로 분리(예: `code_body`, `description_html`)하고 다음을 문서화한다:
+    - 허용 태그: `b`, `i`, `em`, `strong`, `code`, `br`, `span`, `mark`
+    - 허용 속성: `class`(템플릿 정의 클래스에 한함)
+    - 허용 안 함: `<script>`, `<iframe>`, `<style>`, 인라인 이벤트(`onclick=` 등), 외부 URL 속성
+    render.js 측에서 sanitize 미적용 시점에는 본 템플릿이 명시적으로 “신뢰된 입력만” 받도록 사용처(`/style-{name}` 스킬)에 표기한다.
 
 ### 기존 템플릿 참고
 
@@ -145,8 +151,8 @@ description: "{name} 템플릿 스타일 가이드. /card-news 파이프라인�
 ...
 
 ## 사용 가능한 슬라이드 타입
-공통 14종: `cover`, `content`, `content-stat`, `content-quote`, `cta`, `content-image`, `content-steps`, `content-list`, `content-badge`, `content-split`, `content-highlight`, `content-grid`, `content-bigdata`, `content-fullimage`
-(+ 전용 타입이 있으면 추가)
+공통 14종 (정의: [style-shared.md](./style-shared.md)) — 새 스타일은 14종 모두 지원해야 한다.
+(+ 전용 타입이 있으면 별도 섹션에 기재)
 ```
 
 ---

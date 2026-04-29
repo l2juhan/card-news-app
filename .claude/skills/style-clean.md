@@ -26,4 +26,4 @@ headline에 `<span class='highlight'>텍스트</span>` 사용 시 녹색 배경 
 
 ## 사용 가능한 슬라이드 타입
 
-공통 14종: `cover`, `content`, `content-stat`, `content-quote`, `cta`, `content-image`, `content-steps`, `content-list`, `content-badge`, `content-split`, `content-highlight`, `content-grid`, `content-bigdata`, `content-fullimage`
+공통 14종 (정의: [style-shared.md](./style-shared.md))

@@ -64,7 +64,7 @@ card-news-app의 **Main 프로세스**(Node 컨텍스트)와 **Preload**(브리�
 
 ## 에러 핸들링
 
-- 타입 에러: `npm run typecheck`(Phase 2의 PostToolUse Hook으로 자동화 예정).
+- 타입 에러: `npm run typecheck`(PostToolUse Hook으로 자동화됨).
 - IPC handler 누락 등록: `ipc.ts`의 `registerIpcHandlers()` 호출 시점이 `app.whenReady()` 이후인지 확인.
 - Puppeteer 실패: `render.js` 스크립트는 외부 레포 소유 → 우리는 호출/로깅만, 스크립트 자체는 수정 금지.
 

@@ -25,7 +25,8 @@ Electron 41 · React 19 · TypeScript 5.9 (strict) · Vite 8 · esbuild · Zusta
 상세 규칙: `docs/FRONTEND.md` · 디자인 토큰: `docs/DESIGN.md`.
 
 ## .claude/ 구조
-```
+
+```text
 .claude/
 ├── settings.json           # PostToolUse Hook (자동 lint+typecheck)
 ├── agents/                 # 팀 에이전트 3개

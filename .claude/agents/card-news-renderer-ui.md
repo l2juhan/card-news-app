@@ -40,7 +40,7 @@ card-news-app의 **Renderer 프로세스**(브라우저 컨텍스트)에서 동�
 
 ### 스타일링
 - Tailwind 4 유틸리티 클래스 우선. 인라인 `style`은 동적 색상(예: `accentColor`)에만 허용.
-- 디자인 토큰(색상, 스페이싱)이 반복되면 `docs/DESIGN.md`(Phase 2 생성 예정)에 등록 후 사용.
+- 디자인 토큰(색상, 스페이싱)이 반복되면 `docs/DESIGN.md`에 등록 후 사용.
 
 ### 타입 안전성
 - `any` 사용 금지(현재 0개 유지). 불확실하면 `unknown` + 타입 가드.
@@ -65,7 +65,7 @@ card-news-app의 **Renderer 프로세스**(브라우저 컨텍스트)에서 동�
 
 ## 에러 핸들링
 
-- 타입 에러: 작성 직후 `npm run typecheck`로 검증(Phase 2의 PostToolUse Hook이 자동화 예정).
+- 타입 에러: 작성 직후 `npm run typecheck`로 검증(PostToolUse Hook으로 자동화됨).
 - IPC 누락: main-logic에 메시지 전달, 응답 받기 전까지 placeholder 사용 금지.
 - 스타일 누락 토큰: `docs/DESIGN.md`(존재 시) 확인 → 없으면 사용자 확인 후 추가.
 

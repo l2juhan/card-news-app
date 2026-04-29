@@ -23,7 +23,7 @@ card-news-app의 모든 이슈는 `.github/ISSUE_TEMPLATE/`의 정해진 템플�
 
 ## Step 2: 템플릿 선택
 
-```
+```text
 .github/ISSUE_TEMPLATE/
 ├── feature.md   → 새 기능 / 기능 확장
 ├── bug.md       → 버그
@@ -52,7 +52,7 @@ frontmatter 라벨(`type:*`)에 더해, area 라벨을 추가:
 
 ## Step 5: 미리보기 + 확인
 
-```
+```text
 다음 이슈를 생성하려고 합니다:
 
 【제목】
@@ -85,7 +85,8 @@ gh issue create \
 
 1. **분해**: 큰 단위를 작은 이슈(1~3일 작업량)로 분해
 2. **목록 표시**:
-   ```
+
+   ```text
    다음 N개 이슈를 생성하려고 합니다:
 
    1. [Feature] 슬라이드 자동 저장 (area:renderer, area:main)

@@ -20,10 +20,11 @@ assignees: []
 
 ## 작업 범위
 <!-- area 라벨을 함께 붙일 것: area:main / area:renderer / area:preload / area:template / area:build -->
-- [ ] Renderer (UI):
-- [ ] Main (IPC / 비즈니스 로직):
-- [ ] 템플릿 / 렌더링:
-- [ ] 빌드 / 패키징:
+- [ ] Renderer (UI): <!-- area:renderer -->
+- [ ] Main (IPC / 비즈니스 로직): <!-- area:main -->
+- [ ] Preload (contextBridge / preload API): <!-- area:preload -->
+- [ ] 템플릿 / 렌더링: <!-- area:template -->
+- [ ] 빌드 / 패키징: <!-- area:build -->
 
 ## 완료 기준 (Acceptance Criteria)
 - [ ]

@@ -24,12 +24,12 @@ assignees: []
 - OS: <!-- macOS 14.x / Windows 11 등 -->
 - 앱 버전: <!-- package.json의 version -->
 - Electron / Node 버전:
-- 발생 영역: <!-- area:main / area:renderer / area:preload / area:template -->
+- 발생 영역: <!-- area:main / area:renderer / area:preload / area:template / area:build -->
 
 ## 로그 / 스크린샷
 <!-- DevTools 콘솔, main process 로그, 스크린샷 -->
 
-```
+```text
 (로그 붙여넣기)
 ```
 

@@ -4,7 +4,7 @@
 
 ## 1. 폴더/파일 구조
 
-```
+```text
 src/
 ├── main/        # Electron Main 프로세스 (Node 컨텍스트)
 ├── preload/     # contextBridge 브리지
@@ -39,6 +39,7 @@ src/
 - 현재 비율: Container 10 / Pure Presentation 2 → 분리할 여지가 큰 상태
 
 ## 3. 컴포넌트 내부 작성 순서
+
 ```tsx
 // 1) imports (외부 → 내부 → 타입)
 // 2) 타입 정의 (Props는 컴포넌트 직전)

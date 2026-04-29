@@ -24,7 +24,7 @@ description: "rn (React Native) 템플릿 스타일 가이드. /card-news 파이
 
 ## rn 전용 슬라이드 타입
 
-공통 14종 외에 rn에서만 사용 가능한 전용 타입:
+공통 14종 (정의: [style-shared.md](./style-shared.md)) 외에 rn에서만 사용 가능한 전용 타입:
 
 | 타입 | 사용 시점 | 필드 |
 |---|---|---|

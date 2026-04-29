@@ -7,6 +7,7 @@ assignees: []
 ---
 
 ## 대상
+<!-- 생성 후 area:{main|renderer|preload|template|build} 라벨 1개를 반드시 추가 -->
 <!-- 어떤 모듈/컴포넌트/패턴을 리팩터링하려는가? -->
 
 ## 현재 문제
@@ -16,12 +17,12 @@ assignees: []
 <!-- 어떻게 바꾸려는가? Before/After 구조 또는 패턴 -->
 
 ### Before
-```
+```text
 (현재 구조 또는 코드 요약)
 ```
 
 ### After
-```
+```text
 (목표 구조 또는 코드 요약)
 ```
 

@@ -83,12 +83,13 @@ export default [
         'warn',
         { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
       ],
+      // remediation: `as unknown as X` 대신 타입 가드 함수 사용
+      //   function isUser(x: unknown): x is User { return ... }
+      //   if (isUser(data)) { /* 타입 좁혀짐 */ }
+      // 공통 selector는 모든 src/** 파일에 적용. Main/Preload는 추가 selector를 병합한다.
       'no-restricted-syntax': [
         'error',
         {
-          // remediation: `as unknown as X` 대신 타입 가드 함수 사용
-          //   function isUser(x: unknown): x is User { return ... }
-          //   if (isUser(data)) { /* 타입 좁혀짐 */ }
           selector: "TSAsExpression > TSAsExpression[typeAnnotation.type='TSUnknownKeyword']",
           message:
             'as unknown as X 캐스팅 금지. 타입 가드 함수를 작성하세요. 예: function isUser(x: unknown): x is User { ... }',
@@ -128,9 +129,13 @@ export default [
         {
           paths: [
             { name: 'fs', message: 'Renderer는 fs 직접 사용 금지. window.api 경유.' },
+            { name: 'node:fs', message: 'Renderer는 fs 직접 사용 금지. window.api 경유.' },
             { name: 'fs/promises', message: 'Renderer는 fs 직접 사용 금지. window.api 경유.' },
+            { name: 'node:fs/promises', message: 'Renderer는 fs 직접 사용 금지. window.api 경유.' },
             { name: 'path', message: 'Renderer는 path 직접 사용 금지. window.api 경유.' },
+            { name: 'node:path', message: 'Renderer는 path 직접 사용 금지. window.api 경유.' },
             { name: 'child_process', message: 'Renderer는 child_process 금지.' },
+            { name: 'node:child_process', message: 'Renderer는 child_process 금지.' },
             { name: 'electron', message: 'Renderer는 electron 직접 import 금지. window.api 사용.' },
             { name: 'puppeteer', message: 'Renderer는 puppeteer 금지. main에서만.' },
             {
@@ -140,7 +145,7 @@ export default [
           ],
           patterns: [
             {
-              group: ['fs/*', 'path/*'],
+              group: ['fs/*', 'path/*', 'node:fs/*', 'node:path/*'],
               message: 'Node 내장 모듈은 Renderer에서 사용 금지.',
             },
           ],
@@ -167,14 +172,22 @@ export default [
       globals: { ...globals.node },
     },
     rules: {
-      // remediation: Main/Preload는 React/JSX 금지.
-      //   UI 작업이 필요하면 card-news-renderer-ui 에이전트에 위임.
+      // ESLint flat config는 동일 규칙 키를 후속 블록이 "전체 교체"한다.
+      // 공통 selector(`as unknown as X` 차단)도 여기서 함께 다시 명시해야 유지된다.
+      // remediation:
+      //   - JSX/React: card-news-renderer-ui 에이전트에 위임 (Main/Preload는 UI 금지)
+      //   - `as unknown as X`: 타입 가드 함수 사용 (예: function isUser(x): x is User)
       'no-restricted-syntax': [
         'error',
         {
           selector: 'JSXElement',
           message:
             'Main/Preload에서 JSX 금지. UI는 src/renderer/에서. card-news-renderer-ui 에이전트에 위임.',
+        },
+        {
+          selector: "TSAsExpression > TSAsExpression[typeAnnotation.type='TSUnknownKeyword']",
+          message:
+            'as unknown as X 캐스팅 금지. 타입 가드 함수를 작성하세요. 예: function isUser(x: unknown): x is User { ... }',
         },
       ],
     },

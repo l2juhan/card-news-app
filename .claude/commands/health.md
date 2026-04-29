@@ -12,7 +12,7 @@ description: 하네스 자체의 건강 점검 — docs ↔ 코드 ↔ ESLint �
 
 다음 경로가 모두 존재하고 올바른 형태인지 확인:
 
-```
+```text
 ✅ .claude/agents/{card-news-renderer-ui,card-news-main-logic,card-news-qa}.md
 ✅ .claude/skills/{github-issue-work,github-issue-create,harness-feedback}/SKILL.md
 ✅ .claude/skills/{card-news,edit-card-news,create-template,style-*}.md  (콘텐츠 도메인 15개)
@@ -93,7 +93,7 @@ npx tsc --version
 
 ## 7. 보고
 
-```
+```markdown
 ## /health 결과 — {YYYY-MM-DD}
 
 ### ✅ 정상
